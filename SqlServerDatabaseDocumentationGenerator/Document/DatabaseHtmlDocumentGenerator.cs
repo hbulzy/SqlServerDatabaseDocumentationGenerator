@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.IO;
-using System.Web.UI;
 using net.datacowboy.SqlServerDatabaseDocumentationGenerator.Model;
 using net.datacowboy.SqlServerDatabaseDocumentationGenerator.Utility;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Web.UI;
 
 namespace net.datacowboy.SqlServerDatabaseDocumentationGenerator.Document
 {
@@ -15,43 +15,238 @@ namespace net.datacowboy.SqlServerDatabaseDocumentationGenerator.Document
         private readonly string appVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
 
         private readonly string projectUrl = "http://jeremykdev.github.io/SqlServerDatabaseDocumentationGenerator/";
-
+        private Dictionary<string, string> desMap = new Dictionary<string, string>
+        {
+            {"Id","自增主键" },
+            {"PublicId","唯一键" },
+            {"Store","Json对象存储" },
+            {"CreateDate","创建时间" },
+            {"ActivityId","课程Id" },
+            {"inviterId","邀请人Id" },
+            {"TargetId","目标Id" },
+            {"TargetType","目标类型" },
+            {"UserId","用户Id" },
+            {"UserType","用户类型" },
+            {"Score","分数" },
+            {"Latitude","纬度" },
+            {"Longitude","经度" },
+            {"GPSLocation","定位地址" },
+            {"LocationOrgId","举办组织Id" },
+            {"LocationOrgName","举办组织名称" },
+            {"CustomizeLocation","自定义地址" },
+            {"IsCheckIn","是否签到" },
+            {"IsSubmit","是否归档" },
+            {"IsDraft","是否是草稿" },
+            {"SubmitDate","归档时间" },
+            {"LastSaveDate","最后保存时间" },
+            {"IsTeachingGoalComplete","教学目标是否完成" },
+            {"RateOfProgress","进度" },
+            {"IsScoredIn","是否计入得分" },
+            {"UserTitleCode","用户身份" },
+            {"UserTitleName","用户身份名称" },
+            {"UserOrgId","用户组织Id" },
+            {"CreatorId","创建人Id" },
+            {"CreatorName","创建人名称" },
+            {"VideoId","视频Id" },
+            {"Channel","频道" },
+            {"CategoryCode","分类" },
+            {"Source","来源" },
+            {"Password","密码" },
+            {"IsDisabled","是否禁用" },
+            {"IsHidden","是否隐藏" },
+            {"ExpireDate","过期时间" },
+            {"RoleId","角色Id" },
+            {"ClaimType","凭据类型" },
+            {"ClaimValue","凭据值" },
+            {"LoginProvider","登陆提供商" },
+            {"Name","名称" },
+            {"Value","值" },
+            {"ValidCode","验证码" },
+            {"IsEnabled","是否启用" },
+            {"IsOneOff","是否用后失效" },
+            {"Roles","角色" },
+            {"Permissions","权限" },
+            {"ValidTimeout","超时时间" },
+            {"Code","唯一码" },
+            {"ScopeId","有效域" },
+            {"ScopeType","有效域类型" },
+            {"DisplayName","显示名称" },
+            {"ContestId","活动Id" },
+            {"Description","描述" },
+            {"SchemeSnapId","量表快照Id" },
+            {"SegmentSnapId","环节快照Id" },
+            {"ActivityCount","课程数量" },
+            {"UserCount","用户数量" },
+            {"IsFinished","是否已经结束" },
+            {"FinishedUserId","结束操作人" },
+            {"FinishedUserName","结束操作人名称" },
+            {"ContestType","活动类型" },
+            {"ContestSource","活动来源" },
+            {"FirstActivityStartDate","第一节课的开始时间" },
+            {"EvalCount","评课数量" },
+            {"SubmitCount","归档数量" },
+            {"OwnerId","拥有人Id" },
+            {"OwnerName","拥有人名称" },
+            {"DisplayOrder","显示排序" },
+            {"Alias","别名" },
+            {"RelationCode","关系码" },
+            {"RelationPath","关系路径" },
+            {"EntityId","对应实体Id" },
+            {"EntityTypeName","实体类型" },
+            {"CustomizeType","个性化类型" },
+            {"Count","计数" },{"Sum","总和" },
+            {"Avg","平均值" },
+            {"Discriminator","唯一键" },
+            {"GroupId","分组Id" },
+            {"MemberId","成员Id" },
+            {"MemberType","成员类型" },
+            {"Search","可搜索内容" },
+            {"ParentId","父Id" },
+            {"LeagueId","联盟Id" },
+            {"ApplyDate","申请日期" },
+            {"IsApproved","是否审核通过" },
+            {"ApproveDate","审核时间" },
+            {"OperatorId","操作人" },
+            {"OperatorName","操作名称" },
+            {"ApplyId","申请Id" },
+            {"Avatar","头像" },
+            {"MemberCount","成员数量" },
+            {"LeagueType","联盟类型" },
+            {"OwnerOrgId","拥有人组织Id" },
+            {"ActionUrl","操作地址" },
+            {"TemplateKey","模板Key" },
+            {"IsRead","是否已读" },
+            {"ReadDateTime","已读时间" },
+            {"Selected","是否选中" },
+            {"SyncCompleted","是否同步完成" },
+            {"ModificationTime","修改时间" },
+            {"FirstPlayUrl","播放地址" },
+            {"ChannelName","频道名称" },
+            {"LastVisitTime","最后观看时间" },
+            {"DistrictId","地区Id" },
+            {"ProviderKey","授权Key" },
+            {"ProviderDisplayName","提供商展示名称" },
+            {"UserName","用户名" },
+            {"NormalizedUserName","格式化用户名" },
+            {"Email","邮件" },
+            {"NormalizedEmail","格式化邮件" },
+            {"EmailConfirmed","邮件是否验证" },
+            {"PasswordHash","密码哈希值" },
+            {"SecurityStamp","安全时间戳" },
+            {"ConcurrencyStamp","并发时间戳" },
+            {"PhoneNumber","电话" },
+            {"PhoneNumberConfirmed","电话是否验证" },
+            {"LockoutEnd","锁定截止时间" },
+            {"LockoutEnabled","是否锁定" },
+            {"AccessFailedCount","登陆失败次数" },
+            {"IdCard","身份证号码" },
+            {"Title","标题" },
+            {"TeacherId","教师Id" },
+            {"TeacherName","教师名称" },
+            {"SubjectCode","学科码" },
+            {"SubjectName","学科名称" },
+            {"GradeCode","年级码" },
+            {"GradeName","年级名称" },
+            {"PhaseCode","学段码" },
+            {"PhaseName","学段名称" },
+            {"HoldOrgId","举办组织" },
+            {"HoldOrgName","举办组织名称" },
+            {"StartDate","开始时间" },
+            {"EndDate","结束时间" },
+            {"ClassroomId","教室Id" },
+            {"ClassroomName","教室名称" },
+            {"HaveVideo","是否有视频" },
+            {"ActivityType","课程类型" },
+            {"ActivitySource","课程来源" },
+            {"EvalDate","评课时间" },
+            {"ExpiredDate","过期时间" },
+            {"IsPublic","是否公开" },
+            {"OrgId","组织Id" },
+            {"Content","内容" },
+            {"SourceText","来源文本" },
+            {"TitleTemplate","标题模板" },
+            {"TradeNo","订单号" },
+            {"IsProcessed","是否已经处理" },
+            {"ProductId","产品Id" },
+            {"TotalFee","总费用" },
+            {"OrderPayState","订单支付状态" },
+            {"RowVersion","时间戳" },
+            {"LevelCode","等级码" },
+            {"LevelName","等级名称" },
+            {"ContentTemplate","等级名称" },
+            {"IsPaying","是否付费" },
+            {"PayingStatusName","付费状态名称" },
+            {"ExpireNoLimit","无过期限制" },
+            {"MaxUserCount","最大用户数" },
+            {"UserCountNoLimit","无用户最大数量限制" },
+            {"IsProcessing","是否处理中" },
+            {"ProcessBeginDate","处理开始时间" },
+            {"ProcessTimeout","处理超时时间" },
+            {"Address","地址" },
+            {"PublicScopeId","公开范围" },
+            {"PublicScopeType","公开范围类型" },
+            {"FileUrl","文件地址" },
+            {"NormalizedName","格式化名称" },
+            {"TemplateType","模板类型" },
+            {"SnapSign","快照时间" },
+            {"HiddenUntil","隐藏截止时间" },
+            {"HiddenDateTime","隐藏时间" },
+            {"IsTop","是否置顶" },
+            {"TopOrder","置顶排序" },
+            {"TopTime","置顶时间" },
+            {"DepartmentId","部门Id" },
+            {"JoinDate","加入时间" },
+            {"OperateSource","操作来源" },
+            {"DicItemCode","字典项码" },
+            {"DicItemName","字典项名称" },
+            {"Direction","方向" },
+            {"RankInOrg","组织内排序" },
+            {"RankGlobal","全局排序" },
+            {"CreationTime","创建时间" },
+            {"TwoFactorEnabled","开启双重验证" },
+            {"Action","操作" },
+            {"OrgName","组织名称" },
+            {"LevelType","等级类型" },
+        };
         public string ExportToHtml(Database db, TextWriter textWriter, DocumentGeneratorConfiguration docGenConfig)
-			{
-                if (db == null)
-                {
-                    throw new ArgumentNullException("db");
-                }
+        {
+            if (db == null)
+            {
+                throw new ArgumentNullException("db");
+            }
 
-                if (textWriter == null)
-                {
-                    throw new ArgumentNullException("textWriter");
-                }
+            if (textWriter == null)
+            {
+                throw new ArgumentNullException("textWriter");
+            }
 
-                if (docGenConfig == null)
-                {
-                    throw new ArgumentNullException("docGenConfig");
-                }
-
-
-				//var sw = new StringWriter();
-
-				using(var hw = new HtmlTextWriter(textWriter))
-				{
-					hw.WriteLine("<!DOCTYPE HTML>");
-					hw.RenderBeginTag(HtmlTextWriterTag.Html);
-
-					hw.RenderBeginTag(HtmlTextWriterTag.Head);
-
-					hw.RenderBeginTag(HtmlTextWriterTag.Title);
-
-					hw.WriteEncodedText(db.DatabaseName); //TODO: does Write method escape HTML entities???
-
-					hw.RenderEndTag(); //title
+            if (docGenConfig == null)
+            {
+                throw new ArgumentNullException("docGenConfig");
+            }
 
 
-					hw.Write("<!-- ");
-					hw.WriteEncodedText(@"
+            //var sw = new StringWriter();
+
+            using (var hw = new HtmlTextWriter(textWriter))
+            {
+                hw.WriteLine("<!DOCTYPE HTML>");
+                hw.RenderBeginTag(HtmlTextWriterTag.Html);
+
+                hw.RenderBeginTag(HtmlTextWriterTag.Head);
+                hw.AddAttribute("charset", "utf-8");
+
+                hw.RenderBeginTag(HtmlTextWriterTag.Meta);
+                hw.RenderEndTag();
+                hw.RenderBeginTag(HtmlTextWriterTag.Title);
+
+                hw.WriteEncodedText(db.DatabaseName); //TODO: does Write method escape HTML entities???
+
+                hw.RenderEndTag(); //title
+
+
+                hw.Write("<!-- ");
+                hw.WriteEncodedText(@"
 Bootstrap CSS is included.  Bootstrap is released under the MIT license and is copyright 2014 Twitter.
 The MIT License (MIT)
 
@@ -74,579 +269,900 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.");
-					hw.Write(" -->");
-					hw.AddAttribute(HtmlTextWriterAttribute.Type, "text/css");
-					hw.RenderBeginTag(HtmlTextWriterTag.Style);
-					hw.Write(this.baseCss);
-					hw.RenderEndTag(); //style
+                hw.Write(" -->");
+                hw.AddAttribute(HtmlTextWriterAttribute.Type, "text/css");
+                hw.RenderBeginTag(HtmlTextWriterTag.Style);
+                hw.Write(this.baseCss);
+                hw.RenderEndTag(); //style
 
-					hw.RenderEndTag(); //head
+                hw.RenderEndTag(); //head
 
-					hw.RenderBeginTag(HtmlTextWriterTag.Body);
+                hw.RenderBeginTag(HtmlTextWriterTag.Body);
 
-					hw.RenderBeginTag(HtmlTextWriterTag.H1);
+                hw.RenderBeginTag(HtmlTextWriterTag.H1);
 
-					hw.WriteEncodedText(String.Format("{0} Database", db.DatabaseName));
+                hw.WriteEncodedText(String.Format("{0} Database", db.DatabaseName));
 
-					hw.RenderEndTag(); //h1
+                hw.RenderEndTag(); //h1
 
-                    if (!String.IsNullOrWhiteSpace(db.Description))
+                if (!String.IsNullOrWhiteSpace(db.Description))
+                {
+                    hw.RenderBeginTag(HtmlTextWriterTag.P);
+                    hw.WriteEncodedText(db.Description);
+                    hw.RenderEndTag(); //p
+                }
+
+                if (db.Schemas != null && db.Schemas.Count > 0)
+                {
+
+                    for (int s = 0; s < db.Schemas.Count; s++)
                     {
-                        hw.RenderBeginTag(HtmlTextWriterTag.P);
-                        hw.WriteEncodedText(db.Description);
-                        hw.RenderEndTag(); //p
-                    }
+                        var schema = db.Schemas[s];
+                        bool hasTables = (schema.Tables != null && schema.Tables.Count > 0);
 
-					if (db.Schemas != null && db.Schemas.Count > 0)
-					{
+                        if (s > 0)
+                        {
+                            hw.RenderBeginTag(HtmlTextWriterTag.Hr);
+                            hw.RenderEndTag(); //hr
+                        }
 
-						for (int s = 0; s < db.Schemas.Count; s++)
-						{
-							var schema = db.Schemas[s];
-							bool hasTables = (schema.Tables != null && schema.Tables.Count > 0);
+                        hw.RenderBeginTag(HtmlTextWriterTag.H2);
+                        hw.WriteEncodedText(String.Format("{0} (schema)", schema.SchemaName));
+                        hw.RenderEndTag(); //h2
 
-                            if (s > 0)
+                        if (!String.IsNullOrWhiteSpace(schema.Description))
+                        {
+                            hw.RenderBeginTag(HtmlTextWriterTag.P);
+                            hw.WriteEncodedText(schema.Description);
+                            hw.RenderEndTag(); //p
+
+                        }
+
+                        hw.AddAttribute(HtmlTextWriterAttribute.Class, "table table-bordered table-striped table-condensed schema-objects-list-container");
+                        hw.RenderBeginTag(HtmlTextWriterTag.Table);
+
+                        hw.RenderBeginTag(HtmlTextWriterTag.Thead);
+
+                        hw.RenderBeginTag(HtmlTextWriterTag.Tr);
+                        hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                        hw.Write("Object Type");
+                        hw.RenderEndTag(); //th
+
+                        hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                        hw.Write("Count");
+                        hw.RenderEndTag(); //th
+
+                        hw.RenderEndTag(); //tr
+
+                        hw.RenderEndTag(); //thead
+
+
+                        hw.RenderBeginTag(HtmlTextWriterTag.Tbody);
+
+                        hw.RenderBeginTag(HtmlTextWriterTag.Tr);
+
+                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                        hw.Write("Tables");
+                        hw.RenderEndTag(); //td
+
+                        hw.AddAttribute(HtmlTextWriterAttribute.Class, "text-right");
+                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                        if (hasTables)
+                        {
+                            hw.WriteEncodedText(schema.Tables.Count.ToString());
+                        }
+                        else
+                        {
+                            hw.Write("0");
+                        }
+
+                        hw.RenderEndTag(); //td
+
+
+                        hw.RenderEndTag(); //tr
+
+
+                        hw.RenderBeginTag(HtmlTextWriterTag.Tr);
+
+                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                        hw.Write("Views");
+                        hw.RenderEndTag(); //td
+
+                        hw.AddAttribute(HtmlTextWriterAttribute.Class, "text-right");
+                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                        if (schema.Views != null)
+                        {
+                            hw.WriteEncodedText(schema.Views.Count.ToString());
+                        }
+                        else
+                        {
+                            hw.Write("0");
+                        }
+
+                        hw.RenderEndTag(); //td
+
+
+                        hw.RenderEndTag(); //tr
+
+
+
+
+                        hw.RenderBeginTag(HtmlTextWriterTag.Tr);
+
+                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                        hw.Write("Stored procedures");
+                        hw.RenderEndTag(); //td
+
+                        hw.AddAttribute(HtmlTextWriterAttribute.Class, "text-right");
+                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                        if (schema.StoredProcedures != null)
+                        {
+                            hw.WriteEncodedText(schema.StoredProcedures.Count.ToString());
+                        }
+                        else
+                        {
+                            hw.Write("0");
+                        }
+
+                        hw.RenderEndTag(); //td
+
+
+                        hw.RenderEndTag(); //tr
+
+
+                        hw.RenderBeginTag(HtmlTextWriterTag.Tr);
+
+                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                        hw.Write("Scalar functions");
+                        hw.RenderEndTag(); //td
+
+                        hw.AddAttribute(HtmlTextWriterAttribute.Class, "text-right");
+                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                        if (schema.ScalarFunctions != null)
+                        {
+                            hw.WriteEncodedText(schema.ScalarFunctions.Count.ToString());
+                        }
+                        else
+                        {
+                            hw.Write("0");
+                        }
+
+                        hw.RenderEndTag(); //td
+
+
+                        hw.RenderEndTag(); //tr
+
+
+
+                        hw.RenderBeginTag(HtmlTextWriterTag.Tr);
+
+                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                        hw.Write("Table functions");
+                        hw.RenderEndTag(); //td
+
+                        hw.AddAttribute(HtmlTextWriterAttribute.Class, "text-right");
+                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                        if (schema.TableFunctions != null)
+                        {
+                            hw.WriteEncodedText(schema.TableFunctions.Count.ToString());
+                        }
+                        else
+                        {
+                            hw.Write("0");
+                        }
+
+                        hw.RenderEndTag(); //td
+
+
+                        hw.RenderEndTag(); //tr
+
+
+                        hw.RenderEndTag(); //tbody
+
+                        hw.RenderEndTag(); //table
+
+
+
+                        //Render tables
+                        if (hasTables)
+                        {
+
+
+                            for (int t = 0; t < schema.Tables.Count; t++)
                             {
-                                hw.RenderBeginTag(HtmlTextWriterTag.Hr);
-                                hw.RenderEndTag(); //hr
-                            }
+                                var table = schema.Tables[t];
 
-							hw.RenderBeginTag(HtmlTextWriterTag.H2);
-							hw.WriteEncodedText(String.Format("{0} (schema)", schema.SchemaName));
-							hw.RenderEndTag(); //h2
+                                if (docGenConfig.ForeignKeyToTableHyperLink)
+                                {
+                                    // create internel hyperlink target
+                                    hw.AddAttribute("id", table.GetObjectAnchorId());
+                                    hw.RenderBeginTag(HtmlTextWriterTag.A);
+                                    hw.RenderEndTag(); //a
+                                }
 
-							if (!String.IsNullOrWhiteSpace(schema.Description))
-							{
-								hw.RenderBeginTag(HtmlTextWriterTag.P);
-								hw.WriteEncodedText(schema.Description);
-								hw.RenderEndTag(); //p
+                                bool hasIndexes = (table.Indexes != null && table.Indexes.Count > 0);
 
-							}
-
-                            hw.AddAttribute(HtmlTextWriterAttribute.Class, "table table-bordered table-striped table-condensed schema-objects-list-container");
-							hw.RenderBeginTag(HtmlTextWriterTag.Table);
-
-							hw.RenderBeginTag(HtmlTextWriterTag.Thead);
-
-							hw.RenderBeginTag(HtmlTextWriterTag.Tr);
-							hw.RenderBeginTag(HtmlTextWriterTag.Th);
-							hw.Write("Object Type");
-							hw.RenderEndTag(); //th
-
-							hw.RenderBeginTag(HtmlTextWriterTag.Th);
-							hw.Write("Count");
-							hw.RenderEndTag(); //th
-
-							hw.RenderEndTag(); //tr
-
-							hw.RenderEndTag(); //thead
-
-
-							hw.RenderBeginTag(HtmlTextWriterTag.Tbody);
-
-							hw.RenderBeginTag(HtmlTextWriterTag.Tr);
-
-							hw.RenderBeginTag(HtmlTextWriterTag.Td);
-							hw.Write("Tables");
-							hw.RenderEndTag(); //td
-
-							hw.AddAttribute(HtmlTextWriterAttribute.Class, "text-right");
-							hw.RenderBeginTag(HtmlTextWriterTag.Td);
-							if (hasTables)
-							{
-								hw.WriteEncodedText(schema.Tables.Count.ToString());
-							}
-							else
-							{
-								hw.Write("0");
-							}
-
-							hw.RenderEndTag(); //td
-
-
-							hw.RenderEndTag(); //tr
-
-
-                            hw.RenderBeginTag(HtmlTextWriterTag.Tr);
-
-                            hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                            hw.Write("Views");
-                            hw.RenderEndTag(); //td
-
-                            hw.AddAttribute(HtmlTextWriterAttribute.Class, "text-right");
-                            hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                            if (schema.Views != null)
-                            {
-                                hw.WriteEncodedText(schema.Views.Count.ToString());
-                            }
-                            else
-                            {
-                                hw.Write("0");
-                            }
-
-                            hw.RenderEndTag(); //td
-
-
-                            hw.RenderEndTag(); //tr
+                                hw.RenderBeginTag(HtmlTextWriterTag.H3);
+                                hw.WriteEncodedText(String.Format("{0}.{1} (table)", schema.SchemaName, table.TableName));
+                                hw.RenderEndTag(); //h3
 
 
 
+                                hw.AddAttribute(HtmlTextWriterAttribute.Class, "table table-bordered table-striped table-condensed");
+                                hw.RenderBeginTag(HtmlTextWriterTag.Table);
 
-                            hw.RenderBeginTag(HtmlTextWriterTag.Tr);
-
-                            hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                            hw.Write("Stored procedures");
-                            hw.RenderEndTag(); //td
-
-                            hw.AddAttribute(HtmlTextWriterAttribute.Class, "text-right");
-                            hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                            if (schema.StoredProcedures != null)
-                            {
-                                hw.WriteEncodedText(schema.StoredProcedures.Count.ToString());
-                            }
-                            else
-                            {
-                                hw.Write("0");
-                            }
-
-                            hw.RenderEndTag(); //td
+                                if (!String.IsNullOrWhiteSpace(table.Description))
+                                {
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Caption);
+                                    hw.WriteEncodedText(table.Description);
+                                    hw.RenderEndTag(); //caption
+                                }
 
 
-                            hw.RenderEndTag(); //tr
+                                hw.RenderBeginTag(HtmlTextWriterTag.Thead);
+                                hw.RenderBeginTag(HtmlTextWriterTag.Tr);
+                                //=======================
+                                hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                hw.Write("序号");
+                                hw.RenderEndTag(); //th
+                                hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                hw.Write("字段名称");
+                                hw.RenderEndTag(); //th
+                                hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                hw.Write("字段描述");
+                                hw.RenderEndTag(); //th
+                                hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                hw.Write("数据类型");
+                                hw.RenderEndTag(); //th
+                                hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                hw.Write("主键");
+                                hw.RenderEndTag(); //th
+                                hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                hw.Write("非空");
+                                hw.RenderEndTag(); //th
+                                hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                hw.Write("默认值");
+                                hw.RenderEndTag(); //th
+                                //=================
+
+                                //hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                //hw.Write("Column Name");
+                                //hw.RenderEndTag(); //th
+                                //hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                //hw.Write("System Data Type");
+
+                                //if (table.ContainsColumnsWithUserDefinedDataType())
+                                //{
+                                //    hw.Write(" / User Defined Type");
+                                //}
+
+                                //hw.RenderEndTag(); //th
+
+                                //hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                //hw.Write("Size");
+                                //hw.RenderEndTag(); //th
 
 
-                            hw.RenderBeginTag(HtmlTextWriterTag.Tr);
+                                //hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                //hw.Write("Allow Null");
+                                //hw.RenderEndTag(); //th
 
-                            hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                            hw.Write("Scalar functions");
-                            hw.RenderEndTag(); //td
+                                //hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                //hw.Write("Default");
+                                //hw.RenderEndTag(); //th
 
-                            hw.AddAttribute(HtmlTextWriterAttribute.Class, "text-right");
-                            hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                            if (schema.ScalarFunctions != null)
-                            {
-                                hw.WriteEncodedText(schema.ScalarFunctions.Count.ToString());
-                            }
-                            else
-                            {
-                                hw.Write("0");
-                            }
-
-                            hw.RenderEndTag(); //td
+                                //hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                //hw.Write("Is Computed");
+                                //hw.RenderEndTag(); //th
 
 
-                            hw.RenderEndTag(); //tr
+                                //hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                //hw.Write("Description");
+                                //hw.RenderEndTag(); //th
+
+                                hw.RenderEndTag(); //tr
+
+                                hw.RenderEndTag(); //thead
 
 
-                           
-                            hw.RenderBeginTag(HtmlTextWriterTag.Tr);
+                                hw.RenderBeginTag(HtmlTextWriterTag.Tbody);
 
-                            hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                            hw.Write("Table functions");
-                            hw.RenderEndTag(); //td
-
-                            hw.AddAttribute(HtmlTextWriterAttribute.Class, "text-right");
-                            hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                            if (schema.TableFunctions != null)
-                            {
-                                hw.WriteEncodedText(schema.TableFunctions.Count.ToString());
-                            }
-                            else
-                            {
-                                hw.Write("0");
-                            }
-
-                            hw.RenderEndTag(); //td
+                                for (int c = 0; c < table.Columns.Count; c++)
+                                {
 
 
-                            hw.RenderEndTag(); //tr
+                                    var col = table.Columns[c];
 
+                                    bool colHasDefaultValue = (col.DefaultValue != null);
 
-							hw.RenderEndTag(); //tbody
-
-							hw.RenderEndTag(); //table
-							
-
-
-							//Render tables
-							if (hasTables)
-							{
-								
-
-								for (int t = 0; t < schema.Tables.Count; t++)
-								{
-									var table = schema.Tables[t];
-
-                                    if (docGenConfig.ForeignKeyToTableHyperLink)
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Tr);
+                                    //=======================
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                    hw.Write(c + 1);
+                                    hw.RenderEndTag(); //th
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                    hw.Write(col.ColumnName);
+                                    hw.RenderEndTag(); //th
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                    var des = col.Description;
+                                    if (string.IsNullOrEmpty(des))
                                     {
-                                        // create internel hyperlink target
-                                        hw.AddAttribute("id", table.GetObjectAnchorId());
-                                        hw.RenderBeginTag(HtmlTextWriterTag.A);
-                                        hw.RenderEndTag(); //a
-                                    }
-
-									bool hasIndexes = (table.Indexes != null && table.Indexes.Count > 0);
-
-									hw.RenderBeginTag(HtmlTextWriterTag.H3);
-									hw.WriteEncodedText(String.Format("{0}.{1} (table)", schema.SchemaName, table.TableName));
-									hw.RenderEndTag(); //h3
-
-
-
-                                    hw.AddAttribute(HtmlTextWriterAttribute.Class, "table table-bordered table-striped table-condensed");
-									hw.RenderBeginTag(HtmlTextWriterTag.Table);
-									
-									if (!String.IsNullOrWhiteSpace(table.Description))
-									{
-										hw.RenderBeginTag(HtmlTextWriterTag.Caption);
-										hw.WriteEncodedText(table.Description);
-										hw.RenderEndTag(); //caption
-									}
-
-
-									hw.RenderBeginTag(HtmlTextWriterTag.Thead);
-									hw.RenderBeginTag(HtmlTextWriterTag.Tr);
-
-									hw.RenderBeginTag(HtmlTextWriterTag.Th);
-									hw.Write("Column Name");
-									hw.RenderEndTag(); //th
-
-									hw.RenderBeginTag(HtmlTextWriterTag.Th);
-									hw.Write("System Data Type");
-
-                                    if (table.ContainsColumnsWithUserDefinedDataType())
-                                    {
-                                        hw.Write(" / User Defined Type");
-                                    }
-
-									hw.RenderEndTag(); //th
-
-									hw.RenderBeginTag(HtmlTextWriterTag.Th);
-									hw.Write("Size");
-									hw.RenderEndTag(); //th
-
-
-									hw.RenderBeginTag(HtmlTextWriterTag.Th);
-									hw.Write("Allow Null");
-									hw.RenderEndTag(); //th
-
-									hw.RenderBeginTag(HtmlTextWriterTag.Th);
-									hw.Write("Default");
-									hw.RenderEndTag(); //th
-
-									hw.RenderBeginTag(HtmlTextWriterTag.Th);
-									hw.Write("Is Computed");
-									hw.RenderEndTag(); //th
-
-
-									hw.RenderBeginTag(HtmlTextWriterTag.Th);
-									hw.Write("Description");
-									hw.RenderEndTag(); //th
-
-									hw.RenderEndTag(); //tr
-
-									hw.RenderEndTag(); //thead
-
-
-									hw.RenderBeginTag(HtmlTextWriterTag.Tbody);
-
-									for (int c = 0; c < table.Columns.Count; c++)
-									{
-										
-
-										var col = table.Columns[c];
-
-										bool colHasDefaultValue = (col.DefaultValue != null);
-
-										hw.RenderBeginTag(HtmlTextWriterTag.Tr);
-
-										hw.RenderBeginTag(HtmlTextWriterTag.Td);
-										hw.WriteEncodedText(col.ColumnName);
-										hw.RenderEndTag();  //td
-
-										hw.RenderBeginTag(HtmlTextWriterTag.Td);
-										hw.WriteEncodedText(col.BaseDataTypeName);
-										if (col.IsIdentity)
-										{
-											hw.WriteEncodedText(" (identity)");
-										}
-
-                                        if (col.IsUserDefinedType)
+                                        if (desMap.ContainsKey(col.ColumnName))
                                         {
-                                            hw.Write(" / ");
-                                            hw.WriteEncodedText(col.TypeName);
+                                            des = desMap[col.ColumnName];
                                         }
+                                    }
+                                    hw.Write(des??string.Empty);
+                                    hw.RenderEndTag(); //th
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                    var dataTypeName = col.BaseDataTypeName;
 
-										hw.RenderEndTag();  //td
-
-										hw.AddAttribute(HtmlTextWriterAttribute.Class, "text-right");
-										hw.RenderBeginTag(HtmlTextWriterTag.Td);
-
-                                        //show precision, scale when appliable, else use maxlength
-                                        if (col.Precision.HasValue && col.Scale.HasValue && col.Precision > 0)
+                                    if (col.Precision.HasValue && col.Scale.HasValue && col.Precision > 0)
+                                    {
+                                        dataTypeName += String.Format("({0},{1})", col.Precision.Value, col.Scale.Value);
+                                    }
+                                    else
+                                    {
+                                        if (col.MaximumLength.HasValue && col.MaximumLength.Value != -1)
                                         {
-                                            hw.WriteEncodedText(String.Format("{0},{1}",col.Precision.Value, col.Scale.Value));
+                                            dataTypeName += "(" + col.MaximumLength.ToString() + ")";
                                         }
                                         else
                                         {
-                                            if (col.MaximumLength.HasValue && col.MaximumLength.Value != -1)
+                                            if (dataTypeName== "nvarchar")
                                             {
-                                                hw.WriteEncodedText(col.MaximumLength.ToString());
+                                                dataTypeName += "(max)";
                                             }
-                                           
                                         }
+                                    }
+                                    hw.WriteEncodedText(dataTypeName);
 
-
-										hw.RenderEndTag();  //td
-
-
-										hw.RenderBeginTag(HtmlTextWriterTag.Td);
-										hw.WriteEncodedText(col.AllowNull ? "Yes" : "No");
-										hw.RenderEndTag(); //td
-
-
-
-										if (!colHasDefaultValue)
-										{
-											hw.AddAttribute(HtmlTextWriterAttribute.Class, "no-default");
-										}
-
-										hw.RenderBeginTag(HtmlTextWriterTag.Td);
-										hw.WriteEncodedText(colHasDefaultValue ? col.DefaultValue : "none");
-										hw.RenderEndTag(); //td
-
-										hw.RenderBeginTag(HtmlTextWriterTag.Td);
-										hw.WriteEncodedText(col.IsComputed ? "Yes" : "No");
-										hw.RenderEndTag(); //td
-
-										hw.RenderBeginTag(HtmlTextWriterTag.Td);
-										hw.WriteEncodedText(col.Description ?? String.Empty);
-										hw.RenderEndTag(); //td
-
-										hw.RenderEndTag(); //tr
-
-									} //for column loop
-
-									hw.RenderEndTag(); //tbody
-
-									hw.RenderEndTag(); //table
-
-
-									if (hasIndexes)
-									{
-                                        hw.AddAttribute(HtmlTextWriterAttribute.Class, "table table-bordered table-striped table-condensed");
-										hw.RenderBeginTag(HtmlTextWriterTag.Table);
-
-										hw.RenderBeginTag(HtmlTextWriterTag.Caption);
-										hw.WriteEncodedText(String.Format("Indexes on {0}", table.TableName));
-										hw.RenderEndTag(); //caption
-
-										hw.RenderBeginTag(HtmlTextWriterTag.Thead);
-										hw.RenderBeginTag(HtmlTextWriterTag.Tr);
-
-										hw.RenderBeginTag(HtmlTextWriterTag.Th);
-										hw.Write("Index Name");
-										hw.RenderEndTag(); //th
-
-										hw.RenderBeginTag(HtmlTextWriterTag.Th);
-										hw.Write("Description");
-										hw.RenderEndTag(); //th
-
-										hw.RenderBeginTag(HtmlTextWriterTag.Th);
-										hw.Write("Is Primary Key");
-										hw.RenderEndTag(); //th
-
-										hw.RenderBeginTag(HtmlTextWriterTag.Th);
-										hw.Write("Is Unique");
-										hw.RenderEndTag(); //th
-
-										hw.RenderBeginTag(HtmlTextWriterTag.Th);
-										hw.Write("Index Type");
-										hw.RenderEndTag(); //th
-
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                                        hw.Write("Columns");
-                                        hw.RenderEndTag(); //th
-										
-										hw.RenderEndTag(); //tr
-										hw.RenderEndTag(); //thead
-
-										hw.RenderBeginTag(HtmlTextWriterTag.Tbody);
-
-										for (int i = 0; i < table.Indexes.Count; i++)
-										{
-											var index = table.Indexes[i];
-
-											hw.RenderBeginTag(HtmlTextWriterTag.Tr);
-
-
-											hw.RenderBeginTag(HtmlTextWriterTag.Td);
-											hw.WriteEncodedText(index.IndexName);
-											hw.RenderEndTag(); //td
-
-											hw.RenderBeginTag(HtmlTextWriterTag.Td);
-											hw.WriteEncodedText(index.Description ?? String.Empty);
-											hw.RenderEndTag(); //td
-
-											hw.RenderBeginTag(HtmlTextWriterTag.Td);
-											hw.WriteEncodedText(index.IsPrimaryKey.ToYesNo());
-											hw.RenderEndTag(); //td
-
-											hw.RenderBeginTag(HtmlTextWriterTag.Td);
-											hw.WriteEncodedText(index.IsUnique.ToYesNo());
-											hw.RenderEndTag(); //td
-
-											hw.RenderBeginTag(HtmlTextWriterTag.Td);
-											hw.WriteEncodedText(index.IndexTypeDescription);
-											hw.RenderEndTag(); //td
-
-                                            hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                                            hw.WriteEncodedText(String.Join(", ", index.ColumnNames.ToArray()));
-                                            hw.RenderEndTag(); //td
-
-
-											hw.RenderEndTag(); //tr
-										}
-
-										hw.RenderEndTag(); //tbody
-
-										hw.RenderEndTag(); //table
-
-
-									} //end indexes
-
-
-
-                                    if (table.ForeignKeys != null && table.ForeignKeys.Count > 0)
+                                    hw.RenderEndTag(); //th
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                    if (col.IsIdentity)
                                     {
-                                        hw.AddAttribute(HtmlTextWriterAttribute.Class, "table table-bordered table-striped table-condensed");
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Table);
-
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Caption);
-                                        hw.WriteEncodedText(String.Format("Foreign Keys in {0}", table.TableName));
-                                        hw.RenderEndTag(); //caption
-
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Thead);
-
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                                        hw.Write("Foreign Key Name");
-                                        hw.RenderEndTag(); //th
-
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                                        hw.Write("Columns");
-                                        hw.RenderEndTag(); //th
-
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                                        hw.Write("References Table (Columns)");
-                                        hw.RenderEndTag(); //th
-
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                                        hw.Write("Description");
-                                        hw.RenderEndTag(); //th
-
-                                        hw.RenderEndTag(); //thead
-
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Tbody);
-
-                                        for (int f = 0; f < table.ForeignKeys.Count; f++)
-                                        {
-                                            var fk = table.ForeignKeys[f];
-
-                                            hw.RenderBeginTag(HtmlTextWriterTag.Tr);
-
-                                            hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                                            hw.WriteEncodedText(fk.ForeignKeyName);
-                                            hw.RenderEndTag(); //td
-
-                                            hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                                            hw.WriteEncodedText(String.Join(", ", fk.GetForeignKeyParentColumnNames()));
-                                            hw.RenderEndTag(); //td
-
-                                            hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                                            //hw.WriteEncodedText(String.Format("{0}.{1} ({2})", fk.ReferencedObjectSchemaName, fk.ReferencedObjectName, String.Join(", ",fk.GetForeignKeyReferenceColumnNames())));
-
-
-                                            if (docGenConfig.ForeignKeyToTableHyperLink)
-                                            {
-                                                hw.AddAttribute("href", fk.GetFkTargetAnchorId());
-                                                hw.RenderBeginTag(HtmlTextWriterTag.A);
-                                                hw.WriteEncodedText(String.Format("{0}.{1} ({2})", fk.ReferencedObjectSchemaName, fk.ReferencedObjectName, String.Join(", ", fk.GetForeignKeyReferenceColumnNames())));
-                                                //hw.WriteEncodedText("table ->");
-                                                hw.RenderEndTag(); //a
-                                            }
-                                            else
-                                            {
-                                                hw.WriteEncodedText(String.Format("{0}.{1} ({2})", fk.ReferencedObjectSchemaName, fk.ReferencedObjectName, String.Join(", ", fk.GetForeignKeyReferenceColumnNames())));
-                                            }
-
-                                            hw.RenderEndTag(); //td
-
-                                            
-
-                                            hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                                            hw.WriteEncodedText(fk.Description ?? String.Empty);
-                                            hw.RenderEndTag(); //td
-
-                                            hw.RenderEndTag(); //tr
-                                        }
-
-                                        hw.RenderEndTag(); //tbody
-
-                                        hw.RenderEndTag(); //table
+                                        hw.Write("√");
+                                    }
+                                    else
+                                    {
+                                        hw.Write("");
+                                    }
+                                    hw.RenderEndTag(); //th
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                    hw.WriteEncodedText(col.AllowNull ? "" : "√");
+                                    hw.RenderEndTag(); //th
+                                    if (!colHasDefaultValue)
+                                    {
+                                        hw.AddAttribute(HtmlTextWriterAttribute.Class, "no-default");
+                                    }
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                    hw.WriteEncodedText(colHasDefaultValue ? col.DefaultValue : "none");
+                                    hw.RenderEndTag(); 
+                                    //=================
 
 
 
-                                    } //end foreign keys
 
-								} //end for table loop
+                                    //hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                    //hw.WriteEncodedText(col.ColumnName);
+                                    //hw.RenderEndTag();  //td
+
+                                    //hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                    //hw.WriteEncodedText(col.BaseDataTypeName);
+                                    //if (col.IsIdentity)
+                                    //{
+                                    //    hw.WriteEncodedText(" (identity)");
+                                    //}
+
+                                    //if (col.IsUserDefinedType)
+                                    //{
+                                    //    hw.Write(" / ");
+                                    //    hw.WriteEncodedText(col.TypeName);
+                                    //}
+
+                                    //hw.RenderEndTag();  //td
+
+                                    //hw.AddAttribute(HtmlTextWriterAttribute.Class, "text-right");
+                                    //hw.RenderBeginTag(HtmlTextWriterTag.Td);
+
+                                    ////show precision, scale when appliable, else use maxlength
+                                    //if (col.Precision.HasValue && col.Scale.HasValue && col.Precision > 0)
+                                    //{
+                                    //    hw.WriteEncodedText(String.Format("{0},{1}", col.Precision.Value, col.Scale.Value));
+                                    //}
+                                    //else
+                                    //{
+                                    //    if (col.MaximumLength.HasValue && col.MaximumLength.Value != -1)
+                                    //    {
+                                    //        hw.WriteEncodedText(col.MaximumLength.ToString());
+                                    //    }
+
+                                    //}
+
+
+                                    //hw.RenderEndTag();  //td
+
+
+                                    //hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                    //hw.WriteEncodedText(col.AllowNull ? "Yes" : "No");
+                                    //hw.RenderEndTag(); //td
 
 
 
-                               
+                                    //if (!colHasDefaultValue)
+                                    //{
+                                    //    hw.AddAttribute(HtmlTextWriterAttribute.Class, "no-default");
+                                    //}
+
+                                    //hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                    //hw.WriteEncodedText(colHasDefaultValue ? col.DefaultValue : "none");
+                                    //hw.RenderEndTag(); //td
+
+                                    //hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                    //hw.WriteEncodedText(col.IsComputed ? "Yes" : "No");
+                                    //hw.RenderEndTag(); //td
+
+                                    //hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                    //hw.WriteEncodedText(col.Description ?? String.Empty);
+                                    //hw.RenderEndTag(); //td
+
+                                    hw.RenderEndTag(); //tr
+
+                                } //for column loop
+
+                                hw.RenderEndTag(); //tbody
+
+                                hw.RenderEndTag(); //table
 
 
-							}
-
-
-                            if (schema.Views != null && schema.Views.Count > 0)
-                            {
-                                for (int v = 0; v < schema.Views.Count; v++)
+                                if (false&& hasIndexes)
                                 {
-                                    var view = schema.Views[v];
-
-                                   
-
-                                    hw.RenderBeginTag(HtmlTextWriterTag.H3);
-                                    hw.WriteEncodedText(String.Format("{0}.{1} (view)", schema.SchemaName, view.ViewName));
-                                    hw.RenderEndTag(); //h3
-
-                                    //TODO: add columns and indexes for view, use view.Description as table caption
                                     hw.AddAttribute(HtmlTextWriterAttribute.Class, "table table-bordered table-striped table-condensed");
                                     hw.RenderBeginTag(HtmlTextWriterTag.Table);
 
-                                    if (!String.IsNullOrWhiteSpace(view.Description))
-                                    {
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Caption);
-                                        hw.WriteEncodedText(view.Description);
-                                        hw.RenderEndTag(); //caption
-                                    }
-
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Caption);
+                                    hw.WriteEncodedText(String.Format("Indexes on {0}", table.TableName));
+                                    hw.RenderEndTag(); //caption
 
                                     hw.RenderBeginTag(HtmlTextWriterTag.Thead);
                                     hw.RenderBeginTag(HtmlTextWriterTag.Tr);
 
                                     hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                                    hw.Write("Column Name");
+                                    hw.Write("Index Name");
                                     hw.RenderEndTag(); //th
 
                                     hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                                    hw.Write("System Data Type");
+                                    hw.Write("Description");
+                                    hw.RenderEndTag(); //th
 
-                                    if (view.ContainsColumnsWithUserDefinedDataType())
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                    hw.Write("Is Primary Key");
+                                    hw.RenderEndTag(); //th
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                    hw.Write("Is Unique");
+                                    hw.RenderEndTag(); //th
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                    hw.Write("Index Type");
+                                    hw.RenderEndTag(); //th
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                    hw.Write("Columns");
+                                    hw.RenderEndTag(); //th
+
+                                    hw.RenderEndTag(); //tr
+                                    hw.RenderEndTag(); //thead
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Tbody);
+
+                                    for (int i = 0; i < table.Indexes.Count; i++)
                                     {
-                                        hw.Write(" / User Defined Type");
+                                        var index = table.Indexes[i];
+
+                                        hw.RenderBeginTag(HtmlTextWriterTag.Tr);
+
+
+                                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                        hw.WriteEncodedText(index.IndexName);
+                                        hw.RenderEndTag(); //td
+
+                                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                        hw.WriteEncodedText(index.Description ?? String.Empty);
+                                        hw.RenderEndTag(); //td
+
+                                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                        hw.WriteEncodedText(index.IsPrimaryKey.ToYesNo());
+                                        hw.RenderEndTag(); //td
+
+                                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                        hw.WriteEncodedText(index.IsUnique.ToYesNo());
+                                        hw.RenderEndTag(); //td
+
+                                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                        hw.WriteEncodedText(index.IndexTypeDescription);
+                                        hw.RenderEndTag(); //td
+
+                                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                        hw.WriteEncodedText(String.Join(", ", index.ColumnNames.ToArray()));
+                                        hw.RenderEndTag(); //td
+
+
+                                        hw.RenderEndTag(); //tr
                                     }
 
+                                    hw.RenderEndTag(); //tbody
+
+                                    hw.RenderEndTag(); //table
+
+
+                                } //end indexes
+
+
+
+                                if (table.ForeignKeys != null && table.ForeignKeys.Count > 0)
+                                {
+                                    hw.AddAttribute(HtmlTextWriterAttribute.Class, "table table-bordered table-striped table-condensed");
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Table);
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Caption);
+                                    hw.WriteEncodedText(String.Format("Foreign Keys in {0}", table.TableName));
+                                    hw.RenderEndTag(); //caption
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Thead);
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                    hw.Write("Foreign Key Name");
+                                    hw.RenderEndTag(); //th
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                    hw.Write("Columns");
+                                    hw.RenderEndTag(); //th
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                    hw.Write("References Table (Columns)");
+                                    hw.RenderEndTag(); //th
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                    hw.Write("Description");
+                                    hw.RenderEndTag(); //th
+
+                                    hw.RenderEndTag(); //thead
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Tbody);
+
+                                    for (int f = 0; f < table.ForeignKeys.Count; f++)
+                                    {
+                                        var fk = table.ForeignKeys[f];
+
+                                        hw.RenderBeginTag(HtmlTextWriterTag.Tr);
+
+                                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                        hw.WriteEncodedText(fk.ForeignKeyName);
+                                        hw.RenderEndTag(); //td
+
+                                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                        hw.WriteEncodedText(String.Join(", ", fk.GetForeignKeyParentColumnNames()));
+                                        hw.RenderEndTag(); //td
+
+                                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                        //hw.WriteEncodedText(String.Format("{0}.{1} ({2})", fk.ReferencedObjectSchemaName, fk.ReferencedObjectName, String.Join(", ",fk.GetForeignKeyReferenceColumnNames())));
+
+
+                                        if (docGenConfig.ForeignKeyToTableHyperLink)
+                                        {
+                                            hw.AddAttribute("href", fk.GetFkTargetAnchorId());
+                                            hw.RenderBeginTag(HtmlTextWriterTag.A);
+                                            hw.WriteEncodedText(String.Format("{0}.{1} ({2})", fk.ReferencedObjectSchemaName, fk.ReferencedObjectName, String.Join(", ", fk.GetForeignKeyReferenceColumnNames())));
+                                            //hw.WriteEncodedText("table ->");
+                                            hw.RenderEndTag(); //a
+                                        }
+                                        else
+                                        {
+                                            hw.WriteEncodedText(String.Format("{0}.{1} ({2})", fk.ReferencedObjectSchemaName, fk.ReferencedObjectName, String.Join(", ", fk.GetForeignKeyReferenceColumnNames())));
+                                        }
+
+                                        hw.RenderEndTag(); //td
+
+
+
+                                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                        hw.WriteEncodedText(fk.Description ?? String.Empty);
+                                        hw.RenderEndTag(); //td
+
+                                        hw.RenderEndTag(); //tr
+                                    }
+
+                                    hw.RenderEndTag(); //tbody
+
+                                    hw.RenderEndTag(); //table
+
+
+
+                                } //end foreign keys
+
+                            } //end for table loop
+
+
+
+
+
+
+                        }
+
+
+                        if (schema.Views != null && schema.Views.Count > 0)
+                        {
+                            for (int v = 0; v < schema.Views.Count; v++)
+                            {
+                                var view = schema.Views[v];
+
+
+
+                                hw.RenderBeginTag(HtmlTextWriterTag.H3);
+                                hw.WriteEncodedText(String.Format("{0}.{1} (view)", schema.SchemaName, view.ViewName));
+                                hw.RenderEndTag(); //h3
+
+                                //TODO: add columns and indexes for view, use view.Description as table caption
+                                hw.AddAttribute(HtmlTextWriterAttribute.Class, "table table-bordered table-striped table-condensed");
+                                hw.RenderBeginTag(HtmlTextWriterTag.Table);
+
+                                if (!String.IsNullOrWhiteSpace(view.Description))
+                                {
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Caption);
+                                    hw.WriteEncodedText(view.Description);
+                                    hw.RenderEndTag(); //caption
+                                }
+
+
+                                hw.RenderBeginTag(HtmlTextWriterTag.Thead);
+                                hw.RenderBeginTag(HtmlTextWriterTag.Tr);
+
+                                hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                hw.Write("Column Name");
+                                hw.RenderEndTag(); //th
+
+                                hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                hw.Write("System Data Type");
+
+                                if (view.ContainsColumnsWithUserDefinedDataType())
+                                {
+                                    hw.Write(" / User Defined Type");
+                                }
+
+                                hw.RenderEndTag(); //th
+
+                                hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                hw.Write("Size");
+                                hw.RenderEndTag(); //th
+
+
+                                hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                hw.Write("Allow Null");
+                                hw.RenderEndTag(); //th
+
+                                hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                hw.Write("Default");
+                                hw.RenderEndTag(); //th
+
+                                hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                hw.Write("Is Computed");
+                                hw.RenderEndTag(); //th
+
+
+
+                                hw.RenderEndTag(); //tr
+
+                                hw.RenderEndTag(); //thead
+
+
+                                hw.RenderBeginTag(HtmlTextWriterTag.Tbody);
+
+                                for (int c = 0; c < view.Columns.Count; c++)
+                                {
+
+
+                                    var col = view.Columns[c];
+
+                                    bool colHasDefaultValue = (col.DefaultValue != null);
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Tr);
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                    hw.WriteEncodedText(col.ColumnName);
+                                    hw.RenderEndTag();  //td
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                    hw.WriteEncodedText(col.BaseDataTypeName);
+                                    if (col.IsIdentity)
+                                    {
+                                        hw.WriteEncodedText(" (identity)");
+                                    }
+
+                                    if (col.IsUserDefinedType)
+                                    {
+                                        hw.Write(" / ");
+                                        hw.WriteEncodedText(col.TypeName);
+                                    }
+                                    hw.RenderEndTag();  //td
+
+                                    hw.AddAttribute(HtmlTextWriterAttribute.Class, "text-right");
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                    //show precision, scale when appliable
+                                    if (col.Precision.HasValue && col.Scale.HasValue && col.Precision > 0)
+                                    {
+                                        hw.WriteEncodedText(String.Format("{0},{1}", col.Precision.Value, col.Scale.Value));
+                                    }
+                                    else
+                                    {
+                                        if (col.MaximumLength.HasValue && col.MaximumLength.Value != -1)
+                                        {
+                                            hw.WriteEncodedText(col.MaximumLength.ToString());
+                                        }
+                                        //else
+                                        //{
+                                        //    hw.Write("n/a");
+                                        //}
+                                    }
+
+
+                                    hw.RenderEndTag();  //td
+
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                    hw.WriteEncodedText(col.AllowNull.ToYesNo());
+                                    hw.RenderEndTag(); //td
+
+
+
+                                    if (!colHasDefaultValue)
+                                    {
+                                        hw.AddAttribute(HtmlTextWriterAttribute.Class, "no-default");
+                                    }
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                    hw.WriteEncodedText(colHasDefaultValue ? col.DefaultValue : "none");
+                                    hw.RenderEndTag(); //td
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                    hw.WriteEncodedText(col.IsComputed.ToYesNo());
+                                    hw.RenderEndTag(); //td
+
+
+
+                                    hw.RenderEndTag(); //tr
+
+                                } //for column loop
+
+                                hw.RenderEndTag(); //tbody
+
+                                hw.RenderEndTag(); //table
+
+
+                                if (view.IsIndexedView)
+                                {
+                                    hw.AddAttribute(HtmlTextWriterAttribute.Class, "table table-bordered table-striped table-condensed");
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Table);
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Caption);
+                                    hw.WriteEncodedText(String.Format("Indexes on {0}", view.ViewName));
+                                    hw.RenderEndTag(); //caption
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Thead);
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Tr);
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                    hw.Write("Index Name");
+                                    hw.RenderEndTag(); //th
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                    hw.Write("Description");
+                                    hw.RenderEndTag(); //th
+
+
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                    hw.Write("Is Unique");
+                                    hw.RenderEndTag(); //th
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                    hw.Write("Index Type");
+                                    hw.RenderEndTag(); //th
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                    hw.Write("Columns");
+                                    hw.RenderEndTag(); //th
+
+                                    hw.RenderEndTag(); //tr
+                                    hw.RenderEndTag(); //thead
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Tbody);
+
+                                    for (int i = 0; i < view.Indexes.Count; i++)
+                                    {
+                                        var index = view.Indexes[i];
+
+                                        hw.RenderBeginTag(HtmlTextWriterTag.Tr);
+
+
+                                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                        hw.WriteEncodedText(index.IndexName);
+                                        hw.RenderEndTag(); //td
+
+                                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                        hw.WriteEncodedText(index.Description ?? String.Empty);
+                                        hw.RenderEndTag(); //td
+
+
+
+                                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                        hw.WriteEncodedText(index.IsUnique.ToYesNo());
+                                        hw.RenderEndTag(); //td
+
+                                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                        hw.WriteEncodedText(index.IndexTypeDescription);
+                                        hw.RenderEndTag(); //td
+
+                                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                        hw.WriteEncodedText(String.Join(", ", index.ColumnNames.ToArray()));
+                                        hw.RenderEndTag(); //td
+
+
+                                        hw.RenderEndTag(); //tr
+                                    }
+
+                                    hw.RenderEndTag(); //tbody
+
+                                    hw.RenderEndTag(); //table
+
+
+                                } //end indexes
+
+
+                            } //end views loop
+
+
+                        }//end views
+
+
+
+                        if (schema.StoredProcedures != null && schema.StoredProcedures.Count > 0)
+                        {
+                            for (int r = 0; r < schema.StoredProcedures.Count; r++)
+                            {
+                                var sproc = schema.StoredProcedures[r];
+
+                                hw.RenderBeginTag(HtmlTextWriterTag.H3);
+                                hw.WriteEncodedText(String.Format("{0}.{1} (stored procedure)", schema.SchemaName, sproc.ProcedureName));
+                                hw.RenderEndTag(); //h3
+
+                                if (!String.IsNullOrWhiteSpace(sproc.Description))
+                                {
+                                    hw.RenderBeginTag(HtmlTextWriterTag.P);
+                                    hw.WriteEncodedText(sproc.Description);
+                                    hw.RenderEndTag(); //p
+                                }
+
+                                if (sproc.Parameters != null && sproc.Parameters.Count > 0)
+                                {
+                                    hw.AddAttribute(HtmlTextWriterAttribute.Class, "table table-bordered table-striped table-condensed");
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Table);
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Caption);
+                                    hw.Write("Parameters");
+                                    hw.RenderEndTag();//caption
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Thead);
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Tr);
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                    hw.Write("Paramater Name");
+                                    hw.RenderEndTag(); //th
+
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                    hw.Write("System Data Type");
                                     hw.RenderEndTag(); //th
 
                                     hw.RenderBeginTag(HtmlTextWriterTag.Th);
@@ -655,19 +1171,13 @@ THE SOFTWARE.");
 
 
                                     hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                                    hw.Write("Allow Null");
+                                    hw.Write("Direction");
                                     hw.RenderEndTag(); //th
 
                                     hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                                    hw.Write("Default");
+                                    hw.Write("Description");
                                     hw.RenderEndTag(); //th
 
-                                    hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                                    hw.Write("Is Computed");
-                                    hw.RenderEndTag(); //th
-
-
-                                   
                                     hw.RenderEndTag(); //tr
 
                                     hw.RenderEndTag(); //thead
@@ -675,46 +1185,34 @@ THE SOFTWARE.");
 
                                     hw.RenderBeginTag(HtmlTextWriterTag.Tbody);
 
-                                    for (int c = 0; c < view.Columns.Count; c++)
+                                    for (int m = 0; m < sproc.Parameters.Count; m++)
                                     {
-
-
-                                        var col = view.Columns[c];
-
-                                        bool colHasDefaultValue = (col.DefaultValue != null);
+                                        var param = sproc.Parameters[m];
 
                                         hw.RenderBeginTag(HtmlTextWriterTag.Tr);
 
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                                        hw.WriteEncodedText(col.ColumnName);
-                                        hw.RenderEndTag();  //td
 
                                         hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                                        hw.WriteEncodedText(col.BaseDataTypeName);
-                                        if (col.IsIdentity)
-                                        {
-                                            hw.WriteEncodedText(" (identity)");
-                                        }
+                                        hw.WriteEncodedText(param.ParameterName);
+                                        hw.RenderEndTag(); //td
 
-                                        if (col.IsUserDefinedType)
-                                        {
-                                            hw.Write(" / ");
-                                            hw.WriteEncodedText(col.TypeName);
-                                        }
-                                        hw.RenderEndTag();  //td
+                                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                        hw.WriteEncodedText(param.DataType);
+                                        hw.RenderEndTag(); //td
+
 
                                         hw.AddAttribute(HtmlTextWriterAttribute.Class, "text-right");
                                         hw.RenderBeginTag(HtmlTextWriterTag.Td);
                                         //show precision, scale when appliable
-                                        if (col.Precision.HasValue && col.Scale.HasValue && col.Precision > 0)
+                                        if (param.Precision.HasValue && param.Scale.HasValue && param.Precision > 0)
                                         {
-                                            hw.WriteEncodedText(String.Format("{0},{1}",col.Precision.Value, col.Scale.Value));
+                                            hw.WriteEncodedText(String.Format("{0},{1}", param.Precision.Value, param.Scale.Value));
                                         }
                                         else
                                         {
-                                            if (col.MaximumLength.HasValue && col.MaximumLength.Value != -1)
+                                            if (param.MaximumLength.HasValue && param.MaximumLength.Value != -1)
                                             {
-                                                hw.WriteEncodedText(col.MaximumLength.ToString());
+                                                hw.WriteEncodedText(param.MaximumLength.ToString());
                                             }
                                             //else
                                             //{
@@ -723,656 +1221,441 @@ THE SOFTWARE.");
                                         }
 
 
-                                        hw.RenderEndTag();  //td
-
-
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                                        hw.WriteEncodedText(col.AllowNull.ToYesNo());
-                                        hw.RenderEndTag(); //td
-
-
-
-                                        if (!colHasDefaultValue)
-                                        {
-                                            hw.AddAttribute(HtmlTextWriterAttribute.Class, "no-default");
-                                        }
-
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                                        hw.WriteEncodedText(colHasDefaultValue ? col.DefaultValue : "none");
                                         hw.RenderEndTag(); //td
 
                                         hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                                        hw.WriteEncodedText(col.IsComputed.ToYesNo());
+                                        hw.WriteEncodedText(param.Direction);
                                         hw.RenderEndTag(); //td
 
-                                      
+                                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                        hw.WriteEncodedText(param.Description ?? String.Empty);
+                                        hw.RenderEndTag(); //td
 
                                         hw.RenderEndTag(); //tr
 
-                                    } //for column loop
+                                    } //end parameter loop
+
 
                                     hw.RenderEndTag(); //tbody
 
                                     hw.RenderEndTag(); //table
 
 
-                                    if (view.IsIndexedView)
-                                    {
-                                        hw.AddAttribute(HtmlTextWriterAttribute.Class, "table table-bordered table-striped table-condensed");
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Table);
 
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Caption);
-                                        hw.WriteEncodedText(String.Format("Indexes on {0}", view.ViewName));
-                                        hw.RenderEndTag(); //caption
-
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Thead);
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Tr);
-
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                                        hw.Write("Index Name");
-                                        hw.RenderEndTag(); //th
-
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                                        hw.Write("Description");
-                                        hw.RenderEndTag(); //th
-
-                                    
-
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                                        hw.Write("Is Unique");
-                                        hw.RenderEndTag(); //th
-
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                                        hw.Write("Index Type");
-                                        hw.RenderEndTag(); //th
-
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                                        hw.Write("Columns");
-                                        hw.RenderEndTag(); //th
-
-                                        hw.RenderEndTag(); //tr
-                                        hw.RenderEndTag(); //thead
-
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Tbody);
-
-                                        for (int i = 0; i < view.Indexes.Count; i++)
-                                        {
-                                            var index = view.Indexes[i];
-
-                                            hw.RenderBeginTag(HtmlTextWriterTag.Tr);
+                                }  //end sproc parameters
 
 
-                                            hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                                            hw.WriteEncodedText(index.IndexName);
-                                            hw.RenderEndTag(); //td
-
-                                            hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                                            hw.WriteEncodedText(index.Description ?? String.Empty);
-                                            hw.RenderEndTag(); //td
-
-                                            
-
-                                            hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                                            hw.WriteEncodedText(index.IsUnique.ToYesNo());
-                                            hw.RenderEndTag(); //td
-
-                                            hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                                            hw.WriteEncodedText(index.IndexTypeDescription);
-                                            hw.RenderEndTag(); //td
-
-                                            hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                                            hw.WriteEncodedText(String.Join(", ", index.ColumnNames.ToArray()));
-                                            hw.RenderEndTag(); //td
-
-
-                                            hw.RenderEndTag(); //tr
-                                        }
-
-                                        hw.RenderEndTag(); //tbody
-
-                                        hw.RenderEndTag(); //table
-
-
-                                    } //end indexes
-
-
-                                } //end views loop
-
-
-                            }//end views
+                            } //end sproc loop
 
 
 
-                            if (schema.StoredProcedures != null && schema.StoredProcedures.Count > 0)
+                        }// end stored procedures
+
+
+
+                        if (schema.ScalarFunctions != null && schema.ScalarFunctions.Count > 0)
+                        {
+                            for (int f = 0; f < schema.ScalarFunctions.Count; f++)
                             {
-                                for (int r = 0; r < schema.StoredProcedures.Count; r++)
+                                var func = schema.ScalarFunctions[f];
+
+                                hw.RenderBeginTag(HtmlTextWriterTag.H3);
+                                hw.WriteEncodedText(String.Format("{0}.{1} (scalar function)", schema.SchemaName, func.FunctionName));
+                                hw.RenderEndTag(); //h3
+
+                                if (!String.IsNullOrWhiteSpace(func.Description))
                                 {
-                                    var sproc = schema.StoredProcedures[r];
+                                    hw.RenderBeginTag(HtmlTextWriterTag.P);
+                                    hw.WriteEncodedText(func.Description);
+                                    hw.RenderEndTag(); //p
+                                }
 
-                                    hw.RenderBeginTag(HtmlTextWriterTag.H3);
-                                    hw.WriteEncodedText(String.Format("{0}.{1} (stored procedure)", schema.SchemaName,sproc.ProcedureName) );
-                                    hw.RenderEndTag(); //h3
-
-                                    if (!String.IsNullOrWhiteSpace(sproc.Description))
-                                    {
-                                        hw.RenderBeginTag(HtmlTextWriterTag.P);
-                                        hw.WriteEncodedText(sproc.Description);
-                                        hw.RenderEndTag(); //p
-                                    }
-
-                                    if (sproc.Parameters != null && sproc.Parameters.Count > 0)
-                                    {
-                                        hw.AddAttribute(HtmlTextWriterAttribute.Class, "table table-bordered table-striped table-condensed");
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Table);
-
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Caption);
-                                        hw.Write("Parameters");
-                                        hw.RenderEndTag();//caption
-
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Thead);
-
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Tr);
-
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                                        hw.Write("Paramater Name");
-                                        hw.RenderEndTag(); //th
-
-
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                                        hw.Write("System Data Type");
-                                        hw.RenderEndTag(); //th
-
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                                        hw.Write("Size");
-                                        hw.RenderEndTag(); //th
-
-
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                                        hw.Write("Direction");
-                                        hw.RenderEndTag(); //th
-                                        
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                                        hw.Write("Description");
-                                        hw.RenderEndTag(); //th
-
-                                        hw.RenderEndTag(); //tr
-
-                                        hw.RenderEndTag(); //thead
-
-
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Tbody);
-
-                                        for (int m = 0; m < sproc.Parameters.Count; m++)
-                                        {
-                                            var param = sproc.Parameters[m];
-
-                                            hw.RenderBeginTag(HtmlTextWriterTag.Tr);
-
-
-                                            hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                                            hw.WriteEncodedText(param.ParameterName);
-                                            hw.RenderEndTag(); //td
-
-                                            hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                                            hw.WriteEncodedText(param.DataType);
-                                            hw.RenderEndTag(); //td
-
-
-                                            hw.AddAttribute(HtmlTextWriterAttribute.Class, "text-right");
-                                            hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                                            //show precision, scale when appliable
-                                            if (param.Precision.HasValue && param.Scale.HasValue && param.Precision > 0)
-                                            {
-                                                hw.WriteEncodedText(String.Format("{0},{1}", param.Precision.Value, param.Scale.Value));
-                                            }
-                                            else
-                                            {
-                                                if (param.MaximumLength.HasValue && param.MaximumLength.Value != -1)
-                                                {
-                                                    hw.WriteEncodedText(param.MaximumLength.ToString());
-                                                }
-                                                //else
-                                                //{
-                                                //    hw.Write("n/a");
-                                                //}
-                                            }
-
-                                          
-                                            hw.RenderEndTag(); //td
-
-                                            hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                                            hw.WriteEncodedText(param.Direction);
-                                            hw.RenderEndTag(); //td
-
-                                            hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                                            hw.WriteEncodedText(param.Description ?? String.Empty);
-                                            hw.RenderEndTag(); //td
-
-                                            hw.RenderEndTag(); //tr
-
-                                        } //end parameter loop
-
-
-                                        hw.RenderEndTag(); //tbody
-
-                                        hw.RenderEndTag(); //table
-
-
-
-                                    }  //end sproc parameters
-
-
-                                } //end sproc loop
-
-
-
-                            }// end stored procedures
-
-
-
-                            if (schema.ScalarFunctions != null && schema.ScalarFunctions.Count > 0)
-                            {
-                                for (int f = 0; f < schema.ScalarFunctions.Count; f++)
+                                if (!String.IsNullOrEmpty(func.ReturnDataType))
                                 {
-                                    var func = schema.ScalarFunctions[f];
-
-                                    hw.RenderBeginTag(HtmlTextWriterTag.H3);
-                                    hw.WriteEncodedText(String.Format("{0}.{1} (scalar function)", schema.SchemaName, func.FunctionName));
-                                    hw.RenderEndTag(); //h3
-
-                                    if (!String.IsNullOrWhiteSpace(func.Description))
-                                    {
-                                        hw.RenderBeginTag(HtmlTextWriterTag.P);
-                                        hw.WriteEncodedText(func.Description);
-                                        hw.RenderEndTag(); //p
-                                    }
-
-                                    if (!String.IsNullOrEmpty(func.ReturnDataType))
-                                    {
-
-                                        
-                                        hw.RenderBeginTag(HtmlTextWriterTag.P);
-                                        hw.Write("Returns ");
-                                        hw.AddAttribute(HtmlTextWriterAttribute.Class, "return-type");
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Span);
-                                        hw.WriteEncodedText(func.GetReturnTypeDisplayText());
-                                        hw.RenderEndTag(); //span
-                                        hw.RenderEndTag(); //p
-
-                                    }
-                                   
-
-                                    if (func.Parameters != null && func.Parameters.Count > 0)
-                                    {
-                                        hw.AddAttribute(HtmlTextWriterAttribute.Class, "table table-bordered table-striped table-condensed");
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Table);
-
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Caption);
-                                        hw.Write("Parameters");
-                                        hw.RenderEndTag();//caption
-
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Thead);
-
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Tr);
-
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                                        hw.Write("Paramater Name");
-                                        hw.RenderEndTag(); //th
 
 
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                                        hw.Write("System Data Type");
-                                        hw.RenderEndTag(); //th
+                                    hw.RenderBeginTag(HtmlTextWriterTag.P);
+                                    hw.Write("Returns ");
+                                    hw.AddAttribute(HtmlTextWriterAttribute.Class, "return-type");
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Span);
+                                    hw.WriteEncodedText(func.GetReturnTypeDisplayText());
+                                    hw.RenderEndTag(); //span
+                                    hw.RenderEndTag(); //p
 
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                                        hw.Write("Size");
-                                        hw.RenderEndTag(); //th
-
-
-                                       
-
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                                        hw.Write("Description");
-                                        hw.RenderEndTag(); //th
-
-                                        hw.RenderEndTag(); //tr
-
-                                        hw.RenderEndTag(); //thead
-
-
-                                        hw.RenderBeginTag(HtmlTextWriterTag.Tbody);
-
-                                        for (int m = 0; m < func.Parameters.Count; m++)
-                                        {
-                                            var param = func.Parameters[m];
-
-                                            hw.RenderBeginTag(HtmlTextWriterTag.Tr);
-
-
-                                            hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                                            hw.WriteEncodedText(param.ParameterName);
-                                            hw.RenderEndTag(); //td
-
-                                            hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                                            hw.WriteEncodedText(param.DataType);
-                                            hw.RenderEndTag(); //td
-
-
-                                            hw.AddAttribute(HtmlTextWriterAttribute.Class, "text-right");
-                                            hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                                            //show precision, scale when appliable
-                                            if (param.Precision.HasValue && param.Scale.HasValue && param.Precision > 0)
-                                            {
-                                                hw.WriteEncodedText(String.Format("{0},{1}", param.Precision.Value, param.Scale.Value));
-                                            }
-                                            else
-                                            {
-                                                if (param.MaximumLength.HasValue && param.MaximumLength.Value != -1)
-                                                {
-                                                    hw.WriteEncodedText(param.MaximumLength.ToString());
-                                                }
-                                               
-                                            }
-                                            
-                                            hw.RenderEndTag(); //td
-                                            
-                                            hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                                            hw.WriteEncodedText(param.Description ?? String.Empty);
-                                            hw.RenderEndTag(); //td
-
-                                            hw.RenderEndTag(); //tr
-
-                                        } //end scalar func parameter loop
-
-
-                                        hw.RenderEndTag(); //tbody
-
-                                        hw.RenderEndTag(); //table
-
-
-
-                                    } //end scalar params
                                 }
 
 
-                            } //end scalar functions
-
-
-                            if (schema.TableFunctions != null && schema.TableFunctions.Count > 0)
-                            {
-                                for (int t = 0; t < schema.TableFunctions.Count; t++)
+                                if (func.Parameters != null && func.Parameters.Count > 0)
                                 {
-                                    var tFunc = schema.TableFunctions[t];
+                                    hw.AddAttribute(HtmlTextWriterAttribute.Class, "table table-bordered table-striped table-condensed");
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Table);
 
-                                    hw.RenderBeginTag(HtmlTextWriterTag.H3);
-                                    hw.WriteEncodedText(String.Format("{0}.{1} (table function)", schema.SchemaName, tFunc.FunctionName));
-                                    hw.RenderEndTag(); //h3
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Caption);
+                                    hw.Write("Parameters");
+                                    hw.RenderEndTag();//caption
 
-                                    if (!String.IsNullOrWhiteSpace(tFunc.Description))
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Thead);
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Tr);
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                    hw.Write("Paramater Name");
+                                    hw.RenderEndTag(); //th
+
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                    hw.Write("System Data Type");
+                                    hw.RenderEndTag(); //th
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                    hw.Write("Size");
+                                    hw.RenderEndTag(); //th
+
+
+
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                    hw.Write("Description");
+                                    hw.RenderEndTag(); //th
+
+                                    hw.RenderEndTag(); //tr
+
+                                    hw.RenderEndTag(); //thead
+
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Tbody);
+
+                                    for (int m = 0; m < func.Parameters.Count; m++)
                                     {
-                                        hw.RenderBeginTag(HtmlTextWriterTag.P);
-                                        hw.WriteEncodedText(tFunc.Description);
-                                        hw.RenderEndTag(); //p
-                                    }
+                                        var param = func.Parameters[m];
+
+                                        hw.RenderBeginTag(HtmlTextWriterTag.Tr);
 
 
+                                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                        hw.WriteEncodedText(param.ParameterName);
+                                        hw.RenderEndTag(); //td
+
+                                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                        hw.WriteEncodedText(param.DataType);
+                                        hw.RenderEndTag(); //td
+
+
+                                        hw.AddAttribute(HtmlTextWriterAttribute.Class, "text-right");
+                                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                        //show precision, scale when appliable
+                                        if (param.Precision.HasValue && param.Scale.HasValue && param.Precision > 0)
+                                        {
+                                            hw.WriteEncodedText(String.Format("{0},{1}", param.Precision.Value, param.Scale.Value));
+                                        }
+                                        else
+                                        {
+                                            if (param.MaximumLength.HasValue && param.MaximumLength.Value != -1)
+                                            {
+                                                hw.WriteEncodedText(param.MaximumLength.ToString());
+                                            }
+
+                                        }
+
+                                        hw.RenderEndTag(); //td
+
+                                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                        hw.WriteEncodedText(param.Description ?? String.Empty);
+                                        hw.RenderEndTag(); //td
+
+                                        hw.RenderEndTag(); //tr
+
+                                    } //end scalar func parameter loop
+
+
+                                    hw.RenderEndTag(); //tbody
+
+                                    hw.RenderEndTag(); //table
+
+
+
+                                } //end scalar params
+                            }
+
+
+                        } //end scalar functions
+
+
+                        if (schema.TableFunctions != null && schema.TableFunctions.Count > 0)
+                        {
+                            for (int t = 0; t < schema.TableFunctions.Count; t++)
+                            {
+                                var tFunc = schema.TableFunctions[t];
+
+                                hw.RenderBeginTag(HtmlTextWriterTag.H3);
+                                hw.WriteEncodedText(String.Format("{0}.{1} (table function)", schema.SchemaName, tFunc.FunctionName));
+                                hw.RenderEndTag(); //h3
+
+                                if (!String.IsNullOrWhiteSpace(tFunc.Description))
+                                {
+                                    hw.RenderBeginTag(HtmlTextWriterTag.P);
+                                    hw.WriteEncodedText(tFunc.Description);
+                                    hw.RenderEndTag(); //p
+                                }
+
+
+                                if (tFunc.Parameters != null && tFunc.Parameters.Count > 0)
+                                {
                                     if (tFunc.Parameters != null && tFunc.Parameters.Count > 0)
                                     {
-                                        if (tFunc.Parameters != null && tFunc.Parameters.Count > 0)
-                                        {
-                                            hw.AddAttribute(HtmlTextWriterAttribute.Class, "table table-bordered table-striped table-condensed");
-                                            hw.RenderBeginTag(HtmlTextWriterTag.Table);
-
-                                            hw.RenderBeginTag(HtmlTextWriterTag.Caption);
-                                            hw.Write("Parameters");
-                                            hw.RenderEndTag();//caption
-
-                                            hw.RenderBeginTag(HtmlTextWriterTag.Thead);
-
-                                            hw.RenderBeginTag(HtmlTextWriterTag.Tr);
-
-                                            hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                                            hw.Write("Paramater Name");
-                                            hw.RenderEndTag(); //th
-
-
-                                            hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                                            hw.Write("System Data Type");
-                                            hw.RenderEndTag(); //th
-
-                                            hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                                            hw.Write("Size");
-                                            hw.RenderEndTag(); //th
-
-
-
-
-                                            hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                                            hw.Write("Description");
-                                            hw.RenderEndTag(); //th
-
-                                            hw.RenderEndTag(); //tr
-
-                                            hw.RenderEndTag(); //thead
-
-
-                                            hw.RenderBeginTag(HtmlTextWriterTag.Tbody);
-
-                                            for (int m = 0; m < tFunc.Parameters.Count; m++)
-                                            {
-                                                var param = tFunc.Parameters[m];
-
-                                                hw.RenderBeginTag(HtmlTextWriterTag.Tr);
-
-
-                                                hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                                                hw.WriteEncodedText(param.ParameterName);
-                                                hw.RenderEndTag(); //td
-
-                                                hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                                                hw.WriteEncodedText(param.DataType);
-                                                hw.RenderEndTag(); //td
-
-
-                                                hw.AddAttribute(HtmlTextWriterAttribute.Class, "text-right");
-                                                hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                                                //show precision, scale when appliable
-                                                if (param.Precision.HasValue && param.Scale.HasValue && param.Precision > 0)
-                                                {
-                                                    hw.WriteEncodedText(String.Format("{0},{1}", param.Precision.Value, param.Scale.Value));
-                                                }
-                                                else
-                                                {
-                                                    if (param.MaximumLength.HasValue && param.MaximumLength.Value != -1)
-                                                    {
-                                                        hw.WriteEncodedText(param.MaximumLength.ToString());
-                                                    }
-
-                                                }
-
-                                                hw.RenderEndTag(); //td
-
-                                                hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                                                hw.WriteEncodedText(param.Description ?? String.Empty);
-                                                hw.RenderEndTag(); //td
-
-                                                hw.RenderEndTag(); //tr
-
-                                            } //end table func parameter loop
-
-
-                                            hw.RenderEndTag(); //tbody
-
-                                            hw.RenderEndTag(); //table
-
-
-
-                                        }
-
-                                    }//end table function parameter
-
-
-                                    if (tFunc.Columns != null && tFunc.Columns.Count > 0)
-                                    {
-
-                                        hw.AddAttribute(HtmlTextWriterAttribute.Class, "table table-bordered table-striped table-condensed schema-objects-list-container");
+                                        hw.AddAttribute(HtmlTextWriterAttribute.Class, "table table-bordered table-striped table-condensed");
                                         hw.RenderBeginTag(HtmlTextWriterTag.Table);
+
+                                        hw.RenderBeginTag(HtmlTextWriterTag.Caption);
+                                        hw.Write("Parameters");
+                                        hw.RenderEndTag();//caption
 
                                         hw.RenderBeginTag(HtmlTextWriterTag.Thead);
 
                                         hw.RenderBeginTag(HtmlTextWriterTag.Tr);
 
                                         hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                                        hw.Write("Column Name");
+                                        hw.Write("Paramater Name");
                                         hw.RenderEndTag(); //th
+
 
                                         hw.RenderBeginTag(HtmlTextWriterTag.Th);
                                         hw.Write("System Data Type");
                                         hw.RenderEndTag(); //th
 
                                         hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                                        hw.Write("Allow Null");
+                                        hw.Write("Size");
+                                        hw.RenderEndTag(); //th
+
+
+
+
+                                        hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                        hw.Write("Description");
                                         hw.RenderEndTag(); //th
 
                                         hw.RenderEndTag(); //tr
 
                                         hw.RenderEndTag(); //thead
 
+
                                         hw.RenderBeginTag(HtmlTextWriterTag.Tbody);
 
-                                        for (int c = 0; c < tFunc.Columns.Count; c++)
+                                        for (int m = 0; m < tFunc.Parameters.Count; m++)
                                         {
-                                            var col = tFunc.Columns[c];
+                                            var param = tFunc.Parameters[m];
 
                                             hw.RenderBeginTag(HtmlTextWriterTag.Tr);
 
+
                                             hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                                            hw.WriteEncodedText(col.ColumnName);
+                                            hw.WriteEncodedText(param.ParameterName);
                                             hw.RenderEndTag(); //td
 
                                             hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                                            hw.WriteEncodedText(col.BaseDataTypeName);
+                                            hw.WriteEncodedText(param.DataType);
+                                            hw.RenderEndTag(); //td
+
+
+                                            hw.AddAttribute(HtmlTextWriterAttribute.Class, "text-right");
+                                            hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                            //show precision, scale when appliable
+                                            if (param.Precision.HasValue && param.Scale.HasValue && param.Precision > 0)
+                                            {
+                                                hw.WriteEncodedText(String.Format("{0},{1}", param.Precision.Value, param.Scale.Value));
+                                            }
+                                            else
+                                            {
+                                                if (param.MaximumLength.HasValue && param.MaximumLength.Value != -1)
+                                                {
+                                                    hw.WriteEncodedText(param.MaximumLength.ToString());
+                                                }
+
+                                            }
+
                                             hw.RenderEndTag(); //td
 
                                             hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                                            hw.WriteEncodedText(col.AllowNull.ToYesNo());
+                                            hw.WriteEncodedText(param.Description ?? String.Empty);
                                             hw.RenderEndTag(); //td
 
                                             hw.RenderEndTag(); //tr
 
-                                        } //end table function column loop
+                                        } //end table func parameter loop
+
 
                                         hw.RenderEndTag(); //tbody
 
                                         hw.RenderEndTag(); //table
 
-                                    } //end table function columns
 
 
-                                }
+                                    }
 
-                            } //end table functions
-
-						}// end for schema loop
-
-					}
+                                }//end table function parameter
 
 
-                    //display design issues
-                    if (docGenConfig.CheckForDesignIssues && db.DesignIssueWarnings.HasAny())
+                                if (tFunc.Columns != null && tFunc.Columns.Count > 0)
+                                {
+
+                                    hw.AddAttribute(HtmlTextWriterAttribute.Class, "table table-bordered table-striped table-condensed schema-objects-list-container");
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Table);
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Thead);
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Tr);
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                    hw.Write("Column Name");
+                                    hw.RenderEndTag(); //th
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                    hw.Write("System Data Type");
+                                    hw.RenderEndTag(); //th
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                                    hw.Write("Allow Null");
+                                    hw.RenderEndTag(); //th
+
+                                    hw.RenderEndTag(); //tr
+
+                                    hw.RenderEndTag(); //thead
+
+                                    hw.RenderBeginTag(HtmlTextWriterTag.Tbody);
+
+                                    for (int c = 0; c < tFunc.Columns.Count; c++)
+                                    {
+                                        var col = tFunc.Columns[c];
+
+                                        hw.RenderBeginTag(HtmlTextWriterTag.Tr);
+
+                                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                        hw.WriteEncodedText(col.ColumnName);
+                                        hw.RenderEndTag(); //td
+
+                                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                        hw.WriteEncodedText(col.BaseDataTypeName);
+                                        hw.RenderEndTag(); //td
+
+                                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                                        hw.WriteEncodedText(col.AllowNull.ToYesNo());
+                                        hw.RenderEndTag(); //td
+
+                                        hw.RenderEndTag(); //tr
+
+                                    } //end table function column loop
+
+                                    hw.RenderEndTag(); //tbody
+
+                                    hw.RenderEndTag(); //table
+
+                                } //end table function columns
+
+
+                            }
+
+                        } //end table functions
+
+                    }// end for schema loop
+
+                }
+
+
+                //display design issues
+                if (docGenConfig.CheckForDesignIssues && db.DesignIssueWarnings.HasAny())
+                {
+                    hw.RenderBeginTag(HtmlTextWriterTag.H2);
+                    hw.WriteEncodedText(String.Format("Design Issue Warnings ({0})", db.DesignIssueWarnings.Count));
+                    hw.RenderEndTag(); //h2 
+
+                    hw.AddAttribute(HtmlTextWriterAttribute.Class, "table table-bordered table-striped table-condensed");
+                    hw.RenderBeginTag(HtmlTextWriterTag.Table);
+
+                    hw.RenderBeginTag(HtmlTextWriterTag.Thead);
+
+                    hw.RenderBeginTag(HtmlTextWriterTag.Tr);
+
+                    hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                    hw.Write("Warning Description");
+                    hw.RenderEndTag(); //th
+
+                    hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                    hw.Write("Reference URL");
+                    hw.RenderEndTag(); //th
+
+                    hw.RenderBeginTag(HtmlTextWriterTag.Th);
+                    hw.Write("Object(s)");
+                    hw.RenderEndTag(); //th
+
+                    hw.RenderEndTag(); //tr
+
+                    hw.RenderEndTag(); //thead
+
+                    hw.RenderBeginTag(HtmlTextWriterTag.Tbody);
+
+                    foreach (var warn in db.DesignIssueWarnings)
                     {
-                        hw.RenderBeginTag(HtmlTextWriterTag.H2);
-                        hw.WriteEncodedText(String.Format("Design Issue Warnings ({0})", db.DesignIssueWarnings.Count));
-                        hw.RenderEndTag(); //h2 
-
-                        hw.AddAttribute(HtmlTextWriterAttribute.Class, "table table-bordered table-striped table-condensed");
-                        hw.RenderBeginTag(HtmlTextWriterTag.Table);
-
-                         hw.RenderBeginTag(HtmlTextWriterTag.Thead);
 
                         hw.RenderBeginTag(HtmlTextWriterTag.Tr);
 
-                        hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                        hw.Write("Warning Description");
-                        hw.RenderEndTag(); //th
 
-                        hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                        hw.Write("Reference URL");
-                        hw.RenderEndTag(); //th
+                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                        hw.WriteEncodedText(warn.Description);
+                        hw.RenderEndTag(); //td
 
-                        hw.RenderBeginTag(HtmlTextWriterTag.Th);
-                        hw.Write("Object(s)");
-                        hw.RenderEndTag(); //th
-                        
-                        hw.RenderEndTag(); //tr
 
-                        hw.RenderEndTag(); //thead
-
-                        hw.RenderBeginTag(HtmlTextWriterTag.Tbody);
-
-                        foreach(var warn in db.DesignIssueWarnings)
+                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                        if (warn.ReferenceUrl != null)
                         {
-                            
-                            hw.RenderBeginTag(HtmlTextWriterTag.Tr);
-
-
-                            hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                            hw.WriteEncodedText(warn.Description);
-                            hw.RenderEndTag(); //td
-
-                            
-                            hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                            if(warn.ReferenceUrl != null)
-                            {
-                                hw.AddAttribute("href", warn.ReferenceUrl.ToString());
-                                hw.RenderBeginTag(HtmlTextWriterTag.A);
-                                hw.WriteEncodedText(warn.ReferenceUrl.ToString());
-                                hw.RenderEndTag(); //a
-                            }
-                            hw.RenderEndTag(); //td
-
-                            
-                            hw.RenderBeginTag(HtmlTextWriterTag.Td);
-                            foreach(IDbObject obj in warn.DatabaseObjects)
-                            {
-                                //hw.WriteEncodedText(obj.ObjectFullDisplayName);  //TODO: add internal hyperlinking
-                                hw.WriteEncodedText(String.Format("{0} ( {1} )", obj.ObjectFullDisplayName, obj.ObjectTypeDisplayText));
-                                hw.WriteBreak(); //br
-                                
-                            }
-                            //hw.WriteEncodedText(warn.Description);
-                            hw.RenderEndTag(); //td
-
-                            hw.RenderEndTag(); //tr
+                            hw.AddAttribute("href", warn.ReferenceUrl.ToString());
+                            hw.RenderBeginTag(HtmlTextWriterTag.A);
+                            hw.WriteEncodedText(warn.ReferenceUrl.ToString());
+                            hw.RenderEndTag(); //a
                         }
+                        hw.RenderEndTag(); //td
 
-                        hw.RenderEndTag(); // tbody
 
-                        hw.RenderEndTag(); //table
+                        hw.RenderBeginTag(HtmlTextWriterTag.Td);
+                        foreach (IDbObject obj in warn.DatabaseObjects)
+                        {
+                            //hw.WriteEncodedText(obj.ObjectFullDisplayName);  //TODO: add internal hyperlinking
+                            hw.WriteEncodedText(String.Format("{0} ( {1} )", obj.ObjectFullDisplayName, obj.ObjectTypeDisplayText));
+                            hw.WriteBreak(); //br
+
+                        }
+                        //hw.WriteEncodedText(warn.Description);
+                        hw.RenderEndTag(); //td
+
+                        hw.RenderEndTag(); //tr
                     }
 
-					//footer
-                    hw.RenderBeginTag(HtmlTextWriterTag.P);
-                    hw.WriteEncodedText(String.Format("Documentation created using SQL Server Database Documentation Generator version {0}", this.appVersion));
+                    hw.RenderEndTag(); // tbody
 
-                    hw.WriteBreak(); //br
+                    hw.RenderEndTag(); //table
+                }
 
-                    hw.AddAttribute(HtmlTextWriterAttribute.Href, this.projectUrl);
-                    hw.RenderBeginTag(HtmlTextWriterTag.A);
-                    hw.WriteEncodedText(this.projectUrl);
-                    hw.RenderEndTag(); //a
+                //footer
+                hw.RenderBeginTag(HtmlTextWriterTag.P);
+                hw.WriteEncodedText(String.Format("Documentation created using SQL Server Database Documentation Generator version {0}", this.appVersion));
 
-                    hw.RenderEndTag(); //p
+                hw.WriteBreak(); //br
+
+                hw.AddAttribute(HtmlTextWriterAttribute.Href, this.projectUrl);
+                hw.RenderBeginTag(HtmlTextWriterTag.A);
+                hw.WriteEncodedText(this.projectUrl);
+                hw.RenderEndTag(); //a
+
+                hw.RenderEndTag(); //p
 
 
 
-					hw.RenderEndTag(); //body
+                hw.RenderEndTag(); //body
 
-					hw.RenderEndTag(); //html
-				}
+                hw.RenderEndTag(); //html
+            }
 
-				return textWriter.ToString();
-			}
+            return textWriter.ToString();
+        }
 
 
         //bootstrip + custom css
@@ -1382,10 +1665,10 @@ THE SOFTWARE.");
 				caption { text-align: left; }
 				h3 { margin-top: 3em; }
 				.no-default { font-style: italic; }
-                .return-type { font-weight: bold; }
-                .schema-objects-list-container { width: 40%; min-width: 200px }
-                th { background-color: #B0C4DE; }
-                body {margin-left: .5em;}
+    .return-type { font-weight: bold; }
+    .schema-objects-list-container { width: 40%; min-width: 200px }
+    th { background-color: #B0C4DE; }
+    body {margin-left: .5em;}
 				";
 
 

@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Document\DatabaseHtmlDocumentGenerator - 复制.cs" />
     <Compile Include="Document\DocumentGeneratorConfiguration.cs" />
     <Compile Include="Inspection\CommonInspector.cs" />
     <Compile Include="Inspection\DesignIssue\DatabaseDesignIssueInspector.cs" />
